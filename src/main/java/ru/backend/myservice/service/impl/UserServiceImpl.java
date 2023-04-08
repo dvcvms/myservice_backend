@@ -1,6 +1,8 @@
 package ru.backend.myservice.service.impl;
 
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.backend.myservice.dto.RoleDto;
 import ru.backend.myservice.dto.UserDto;
 import ru.backend.myservice.entity.UserEntity;
@@ -9,8 +11,6 @@ import ru.backend.myservice.mapper.RoleMapper;
 import ru.backend.myservice.mapper.UserMapper;
 import ru.backend.myservice.repository.UserRepository;
 import ru.backend.myservice.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,5 +76,13 @@ public class UserServiceImpl implements UserService {
 
         userIntoDatabase.addRole(roleMapper.toEntity(role));
         return userMapper.toDto(userRepository.save(userIntoDatabase));
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 }
