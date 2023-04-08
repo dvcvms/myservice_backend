@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
     private final UserService userService;
@@ -28,11 +27,6 @@ public class UserController {
     @GetMapping("/user")
     public UserDto getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
-    }
-
-    @GetMapping("/user")
-    public UserDto getUserByEmail(@PathVariable String email) {
-        return userService.getUserByUsername(email);
     }
 
     @GetMapping("/users")
