@@ -85,4 +85,8 @@ public class UserServiceImpl implements UserService {
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
+
+    public int enableUser(String email) {
+        return userRepository.enableAppUser(email);
+    }
 }
