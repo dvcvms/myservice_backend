@@ -1,11 +1,11 @@
 package ru.backend.myservice.security;
 
-import ru.backend.myservice.dto.UserDto;
-import ru.backend.myservice.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import ru.backend.myservice.dto.UserDto;
+import ru.backend.myservice.service.impl.UserServiceImpl;
 
 @Service
 @RequiredArgsConstructor
@@ -15,8 +15,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        UserDto userByEmail = userService.getUserByEmail(email);
+        UserDto userIntoDatabase = userService.getUserByEmail(email);
+        return new UserDetailsImpl(userIntoDatabase);
+    }
 
-        return new UserDetailsImpl(userByEmail);
+    public int enableUser(String email) {
+        return userService.enableUser(email);
     }
 }

@@ -5,11 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 public class UserDto {
     private Long id;
     private String username;
@@ -17,7 +16,14 @@ public class UserDto {
     private String lastname;
     private String email;
     private String password;
+
+    @Builder.Default
+    private Boolean locked = false;
+
+    @Builder.Default
+    private Boolean enabled = false;
+
     @Singular
-    private Set<RoleDto> roles = new HashSet<>();
+    private Set<RoleDto> roles;
 
 }

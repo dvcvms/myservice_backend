@@ -1,16 +1,16 @@
 package ru.backend.myservice.security;
 
-import ru.backend.myservice.dto.RoleDto;
-import ru.backend.myservice.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.backend.myservice.dto.RoleDto;
+import ru.backend.myservice.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UserDetailsImpl implements UserDetails { // TODO: do bean?
+public class UserDetailsImpl implements UserDetails {
 
     private final UserDto user;
 
@@ -34,7 +34,6 @@ public class UserDetailsImpl implements UserDetails { // TODO: do bean?
 
     @Override
     public String getUsername() {
-//        return userEntity.getUsername();
         return user.getEmail();
     }
 
@@ -45,7 +44,7 @@ public class UserDetailsImpl implements UserDetails { // TODO: do bean?
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !user.getLocked();
     }
 
     @Override
@@ -55,6 +54,6 @@ public class UserDetailsImpl implements UserDetails { // TODO: do bean?
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.getEnabled();
     }
 }
