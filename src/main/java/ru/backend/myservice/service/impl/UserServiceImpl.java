@@ -24,26 +24,32 @@ public class UserServiceImpl implements UserService {
     private final RoleMapper roleMapper;
 
     @Override
-    public UserDto createUser(UserDto userDto) {
-        UserEntity savedUser = userRepository.save(userMapper.toEntity(userDto));
+    public UserDto createUser(UserDto user) {
+        UserEntity savedUser = userRepository.save(userMapper.toEntity(user));
         return userMapper.toDto(savedUser);
     }
 
     @Override
     public UserDto getUserById(Long id) {
-        UserEntity userIntoDatabase = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        UserEntity userIntoDatabase = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
         return userMapper.toDto(userIntoDatabase);
     }
 
     @Override
     public UserDto getUserByUsername(String username) {
-        UserEntity userIntoDatabase = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("username: " + username));
+        UserEntity userIntoDatabase = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("username: " + username));
+
         return userMapper.toDto(userIntoDatabase);
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
-        UserEntity userIntoDatabase = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("email: " + email));
+        UserEntity userIntoDatabase = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("email: " + email));
+
         return userMapper.toDto(userIntoDatabase);
     }
 
@@ -55,8 +61,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto) {
-        return null; // TODO    
+    public UserDto updateUser(UserDto user) {
+        UserEntity userIntoDatabase = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserNotFoundException(user.getId()));
+
+        userIntoDatabase.setUsername(user.getUsername());
+        userIntoDatabase.setEmail(user.getEmail());
+        userIntoDatabase.setFirstname(user.getFirstname());
+        userIntoDatabase.setLastname(user.getLastname());
+
+        return userMapper.toDto(userRepository.save(userIntoDatabase));
     }
 
     @Override
@@ -87,6 +101,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public int enableUser(String email) {
-        return userRepository.enableAppUser(email);
+        return userRepository.enableUser(email);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class EmailConfig {
 
-    private final MailProperties mailProperties; // TODO: check on not null property values
+    private final MailProperties mailProperties;
 
     @Bean
     public JavaMailSender javaMailSender() {
