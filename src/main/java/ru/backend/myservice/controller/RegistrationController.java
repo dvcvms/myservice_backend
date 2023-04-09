@@ -15,8 +15,8 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest registrationRequest) {
-        return ResponseEntity.ok(registrationService.register(registrationRequest));
+    public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest request) {
+        return ResponseEntity.ok(registrationService.register(request));
     }
 
     @GetMapping(path = "/confirm")
