@@ -10,6 +10,7 @@ import ru.backend.myservice.entity.ConfirmationTokenEntity;
 import ru.backend.myservice.model.EmailBody;
 import ru.backend.myservice.model.RegistrationRequest;
 import ru.backend.myservice.model.RegistrationResponse;
+import ru.backend.myservice.property.ServerProperties;
 import ru.backend.myservice.security.UserDetailsImpl;
 import ru.backend.myservice.security.UserDetailsServiceImpl;
 import ru.backend.myservice.service.impl.RoleServiceImpl;
@@ -30,16 +31,17 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final ConfirmationTokenService confirmationTokenService;
+    private final ServerProperties serverProperties;
 
     @Transactional
-    public RegistrationResponse register(RegistrationRequest registrationRequest) {
+    public RegistrationResponse register(RegistrationRequest request) {
 
-        UserDto user = UserDto.builder() // TODO: do mapper?-
-                .username(registrationRequest.getUsername())
-                .email(registrationRequest.getEmail())
-                .firstname(registrationRequest.getFirstname())
-                .lastname(registrationRequest.getLastname())
-                .password(passwordEncoder.encode(registrationRequest.getPassword()))
+        UserDto user = UserDto.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
         userValidator.validate(user);
@@ -69,7 +71,10 @@ public class RegistrationService {
     }
 
     private String generateLink(String jwtToken) {
-        return String.format("http://localhost:8080/registration/confirm?token=%s", jwtToken); // TODO: localhost and port from properties
+        return String.format("http://%s:%s/registration/confirm?token=%s",
+                serverProperties.getHost(),
+                serverProperties.getPort(),
+                jwtToken);
     }
 
     @Transactional
