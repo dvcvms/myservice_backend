@@ -1,6 +1,7 @@
 package ru.backend.myservice.service.impl;
 
 import ru.backend.myservice.dto.RoleDto;
+import ru.backend.myservice.exception.RoleNotFoundException;
 import ru.backend.myservice.mapper.RoleMapper;
 import ru.backend.myservice.repository.RoleRepository;
 import ru.backend.myservice.service.RoleService;
@@ -16,6 +17,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto findByName(String name) {
-        return mapper.toDto(roleRepository.findByName(name).orElseThrow()); // TODO: create custom exception
+        return mapper.toDto(roleRepository.findByName(name)
+                .orElseThrow(() -> new RoleNotFoundException(String.format("Role `%s` not found.", name))));
     }
 }

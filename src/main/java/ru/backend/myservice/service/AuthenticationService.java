@@ -18,16 +18,16 @@ public class AuthenticationService {
     private final UserServiceImpl userService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getEmail(),
-                        authenticationRequest.getPassword()
+                        request.getEmail(),
+                        request.getPassword()
                 )
         );
 
-        UserDto userByEmail = userService.getUserByEmail(authenticationRequest.getEmail());
-        String jwtToken = jwtService.generateToken(new UserDetailsImpl(userByEmail)); // TODO: factory pattern ?
+        UserDto user = userService.getUserByEmail(request.getEmail());
+        String jwtToken = jwtService.generateToken(new UserDetailsImpl(user));
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
